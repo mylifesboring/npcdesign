@@ -1,9 +1,11 @@
 #lang racket
 
+; DEPENDENCIES
 (require srfi/1)
 (require srfi/13)
 (require srfi/48)
 
+; QUESTIONS NPC WILL ASK
 (define descriptions '((1 "\n
                            Hello! I am Birdie.
                            I can search and recommend millions of movies within seconds... \n
@@ -28,9 +30,11 @@ Type in a movie genre:")
                        (4444 "Well then... Want me to fly elsewhere and suggest some non-animated movies for you then instead?")
                        (44444 "Well then... Want me to fly elsewhere and suggest some non-sci-fi movies for you then instead?")))
 
+; LISTS OF PAIRS. FIRST IS THE USERS ENTRY AND OTHERS ARE WHAT THE SOFTWARE SHOULD UNDERSTAND WITH THAT GIVEN ENTRY
 (define faq '(((faq) faq)))
 (define quit '(((quit) quit) ((exit) quit) ((end) quit)))
 
+; LISTS USING UNQUOTE-SPLICING TO DYNAMICALLY REFERENCE ALL OTHER LISTS
 (define commands `(,@faq ,@quit))
 
 (define decisiontable `((1 ((horror) 2) ((scary) 2) ((comedy) 22) ((funny) 22) ((romantic) 222) ((love) 222) ((animated) 2222) ((disney) 2222) ((sci-fi) 22222) ((scifi) 22222) ,@commands)
@@ -56,37 +60,45 @@ Type in a movie genre:")
 (define (get-location id)
   (printf "~a\n" (car (assq-ref descriptions id))))
 
+; RETRIEVES THE CDR OF THE FIRST PAIR IN ASSQLIST WHERE CAR EQUALS TO ID
 (define (assq-ref assqlist id)
   (cdr (assq id assqlist)))
 
-(define (lookup id tokens) 
-  (let* ((record (assv-ref decisiontable id))        
-         (keylist (get-keywords id))         
-         (index (index-of-largest-number (list-of-lengths keylist tokens))))
-       (if index 
+; RECIEVES THE ID AND A LIST OF SYMBOLS THAT REPRESENTS THE USERS INPUT
+(define (lookup id tokens)
+  ; ASSIGNS TO RECORD A LIST WITH THE POSSIBLE ACTIONS FOR THE CURRENT MOVIE GENRE ENTERED
+  (let* ((record (assv-ref decisiontable id))
+                  (keylist (get-keywords id))
+            (index (index-of-largest-number (list-of-lengths keylist tokens))))
+            (if index 
       (cadr (list-ref record index))
       #f)))
 
+; THE SAME AS ASSQ-REF BUT USES EQV? FOR COMPARISON INSTEAD OF EQ?
 (define (assv-ref assqlist id)
   (cdr (assv id assqlist)))
 
+; RETRIEVES THE VALID KEYWORDS FOR THE NPC
 (define (get-keywords id)
   (let ((keys (assq-ref decisiontable id)))
     (map (lambda (key) (car key)) keys)))
 
+; RETURNS A LIST OF LENGTHS THAT SHOWS THE MOST LIKELY COMMANDS GIVEN BY THE USER. FOR EXAMPLE ( 0 0 0 3 0 0 )
 (define (list-of-lengths keylist tokens)
   (map 
    (lambda (x)
      (let ((set (lset-intersection eq? tokens x)))
        (* (/ (length set) (length x)) (length set))))
    keylist))
- 
+
+; RETURNS THE MOST LIKELY INPUT COMMAND
 (define (index-of-largest-number list-of-numbers)
   (let ((n (car (sort list-of-numbers >))))
     (if (zero? n)
       #f
       (list-index (lambda (x) (eq? x n)) list-of-numbers))))  
 
+; PRINT THE FAQ TEXT ON SCREEN
 (define (display-faq)
   (printf "
           Frequently Asked Questions \n
@@ -99,62 +111,71 @@ Type in a movie genre:")
           Are you case-sensitive?
           yes! lowercase only please! \n"))
 
+; MAIN LOOP FOR NPC. 
 (define (search initial-id)
   (let loop ((id initial-id) (description #t))
     (if description
         (get-location id)
         (printf "> "))
+    ; READ INPUT FROM USER
     (let* ((input (read-line))
            (string-tokens (string-tokenize input))
            (tokens (map string->symbol string-tokens)))
-      (let ((response (lookup id tokens)))
+       (let ((response (lookup id tokens)))
         (cond ((number? response)
                (loop response #t))
-              
+              ; IF RESPONSE MEANING COULDN'T BE FOUND AFTER THE LOOKUP FUNCTION, PRINTS ERROR MESSAGE
               ((eq? #f response)
                (format #t "Sorry! I didn't understand that... \n")
                (loop id #f))
-
+              ; RESPONSE HORROR PRINTS OUT A SEARCH MESSAGE THEN ENDS APPLICATION
               ((eq? response 'horror)              
                (format #t "Flying away to search for horror movies... \n")
                (exit))
+              ; RESPONSE NON-HORROR PRINTS OUT A SEARCH MESSAGE THEN ENDS APPLICATION
               ((eq? response 'non-horror)              
                (format #t "Flying away to search for non-horror movies... \n")
                (exit))
-
+              ; RESPONSE COMEDY PRINTS OUT A SEARCH MESSAGE THEN ENDS APPLICATION
               ((eq? response 'comedy)              
                (format #t "Flying away to search for comedy movies... \n")
                (exit))
+              ; RESPONSE NON-COMEDY PRINTS OUT A SEARCH MESSAGE THEN ENDS APPLICATION
               ((eq? response 'non-comedy)              
                (format #t "Flying away to search for noncomedy movies... \n")
                (exit))
-
+              ; RESPONSE ROMANTIC PRINTS OUT A SEARCH MESSAGE THEN ENDS APPLICATION
               ((eq? response 'romantic)              
                (format #t "Flying away to search for romantic movies... \n")
                (exit))
+              ; RESPONSE NON-ROMANTIC PRINTS OUT A SEARCH MESSAGE THEN ENDS APPLICATION
               ((eq? response 'non-romantic)              
                (format #t "Flying away to search for non-romantic movies... \n")
                (exit))
-
+              ; RESPONSE ANIMATED PRINTS OUT A SEARCH MESSAGE THEN ENDS APPLICATION
               ((eq? response 'animated)              
                (format #t "Flying away to search for animated movies... \n")
                (exit))
+              ; RESPONSE NON-ANIMATED PRINTS OUT A SEARCH MESSAGE THEN ENDS APPLICATION
               ((eq? response 'non-animated)              
                (format #t "Flying away to search for non-animated movies... \n")
                (exit))
-
+              ; RESPONSE SCI-FI PRINTS OUT A SEARCH MESSAGE THEN ENDS APPLICATION
               ((eq? response 'sci-fi)              
                (format #t "Flying away to search for sci-fi movies... \n")
                (exit))
+              ; RESPONSE NON-SCI-FI PRINTS OUT A SEARCH MESSAGE THEN ENDS APPLICATION
               ((eq? response 'non-sci-fi)              
                (format #t "Flying away to search for non-sci-fi movies... \n")
                (exit))
-              
+              ; RESPONSE FAQ PRINTS OUT A FAQ ON SCREEN THEN LOOPS BACK TO QUESTION BEING ASKED
               ((eq? response 'faq)
                 (display-faq)
                 (loop id #f))
-
+              ; RESPONSE QUIT ENDS APPLICATION
               ((eq? response 'quit)
                (format #t "Thanks for using Birdie! \n")
                (exit)))))))
+
+; START APPLICATION
 (search 1)
