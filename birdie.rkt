@@ -8,6 +8,7 @@
                            Hello! I am Birdie.
                            I can search and recommend millions of movies within seconds... \n
 Type in a movie genre:")
+
                       
                        (2 "So you like horror, am I correct?")
                        (22 "So you like comedy, am I correct?")
@@ -149,12 +150,11 @@ Type in a movie genre:")
                (format #t "Flying away to search for non-sci-fi movies... \n")
                (exit))
               
-              ((eq? response 'faq
+              ((eq? response 'faq)
                 (display-faq)
                 (loop id #f))
 
               ((eq? response 'quit)
                (format #t "Thanks for using Birdie! \n")
-               (exit))))))))
-
+               (exit)))))))
 (search 1)
