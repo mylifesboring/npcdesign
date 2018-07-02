@@ -1,0 +1,70 @@
+commit 969adeb71e07a927cfa278c4dd3a219284627708 
+Author: zohaib khan <21331583@student.uwl.ac.uk>
+Date:   Tue Jul 3 00:38:53 2018 +0100
+
+    added comments to final draft
+
+- brief explanation on what each piece of coding does
+- application fully working without any errors
+
+commit 40e10401009b4550f8b2aa70507065ddc8a57842
+Author: zohaib khan <21331583@student.uwl.ac.uk>
+Date:   Mon Jul 2 23:36:12 2018 +0100
+
+    fixed small error with commands
+
+- after using faq command, the application would not allow the user to input anything
+- added close bracket to faq command so it works with quit command also
+
+commit 49ba9126f7a2596671ca900825ad9ef20b9a8326
+Author: zohaib khan <21331583@student.uwl.ac.uk>
+Date:   Mon Jul 2 22:37:17 2018 +0100
+
+    fixed minor errors - application now working
+
+- was having problem with the lset-intersection
+- used wrong apostrophe in desiciontable
+
+commit 3bfdd72352d03a25bf19ea86e635d8ffb6400aea
+Author: zohaib khan <21331583@student.uwl.ac.uk>
+Date:   Mon Jul 2 22:35:12 2018 +0100
+
+    added more genres into decisiontable
+
+- added comedy, romantic and sci-fi 
+
+commit fab7bb38d010e512a5da74dbf6a8f78bea7bd6a5
+Author: zohaib khan <21331583@student.uwl.ac.uk>
+Date:   Mon Jul 2 22:28:53 2018 +0100
+
+    added commands for faq and quit
+
+- user can input these commands to display either a faq on screen or end the application
+
+commit b13c43cde70f662cf668561c09392580d10a646d
+Author: zohaib khan <21331583@student.uwl.ac.uk>
+Date:   Mon Jul 2 22:10:49 2018 +0100
+
+    added code based on keyword matches
+
+commit 69e81a8ef44ebbffc74e0caecea01d3253155893
+Author: zohaib khan <21331583@student.uwl.ac.uk>
+Date:   Mon Jul 2 21:58:26 2018 +0100
+
+    added association lists
+
+- added what the npc will ask and a movie genre the user can input
+
+commit 9c1d467d932a7995002482125ef39fa43cfe4bb2
+Author: zohaib khan <21331583@student.uwl.ac.uk>
+Date:   Mon Jul 2 21:52:23 2018 +0100
+
+    added main loop
+
+- the main code for the application
+
+commit 4cd5d1728613f055911b5ecc0d29b48408c79cd6
+Author: zohaib khan <21331583@student.uwl.ac.uk>
+Date:   Mon Jul 2 18:59:02 2018 +0100
+
+    first commit
