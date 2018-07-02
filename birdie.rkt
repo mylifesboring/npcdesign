@@ -14,6 +14,11 @@
                         (4 ((yes) non-horror) ((no) quit)))))))
 
 
+(define faq '(((faq) faq)))
+(define quit '(((quit) quit) ((exit) quit) ((end) quit)))
+
+(define commands `(,@faq ,@quit))
+
 (define (get-location id)
   (printf "~a\n" (car (assq-ref descriptions id))))
 
@@ -48,19 +53,43 @@
       #f
       (list-index (lambda (x) (eq? x n)) list-of-numbers))))  
 
+(define (display-faq)
+  (printf "
+          Frequently Asked Questions \n
+          What is Birdie?
+          I am a highly powerful search engine capable of finding almost any movie released after 1950. \n
+          How does Birdie work?
+          Type in any movie genre into the search box and I will do the rest for you. \n
+          How many movies is Birdie able to recommend?
+          I can search for over 200 million movies from over 15 different genres. \n
+          Are you case-sensitive?
+          yes! lowercase only please! \n"))
 
 (define (search initial-id)
-
     (let* ((input (read-line))
            (string-tokens (string-tokenize input))
-           (tokens (map string->symbol string-tokens)))
-      
+           (tokens (map string->symbol string-tokens)))      
       (let ((response (lookup id tokens)))
         (cond ((number? response)
                (loop response #t))
               
               ((eq? #f response)
                (format #t "Sorry! I didn't understand that... \n")
-               (loop id #f))))))
+               (loop id #f)
+
+                ((eq? response 'horror)              
+               (format #t "Flying away to search for horror movies... \n")
+               (exit))
+                ((eq? response 'non-horror)              
+               (format #t "Flying away to search for non-horror movies... \n")
+               (exit))
+
+               ((eq? response 'faq
+                (display-faq)
+                (loop id #f))
+
+              ((eq? response 'quit)
+               (format #t "Thanks for using Birdie! \n")
+               (exit))))))))
 
 (search 1)
