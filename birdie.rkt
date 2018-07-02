@@ -8,7 +8,7 @@
                            Hello! I am Birdie.
                            I can search and recommend millions of movies within seconds... \n
 Type in a movie genre:")
-                       
+                      
                        (2 "So you like horror, am I correct?")
                        (22 "So you like comedy, am I correct?")
                        (222 "So you like romantic, am I correct?")
